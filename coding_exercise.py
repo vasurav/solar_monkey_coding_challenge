@@ -79,6 +79,10 @@ def validate_sudoku(board):
            check_blocks(board)
 
 
+def check_for_duplicates(list_check):
+    return len(list_check) != len(set(list_check))
+
+
 def check_zeros(board):
     """checks if the board has any zeros in it"""
     for row in board:
@@ -99,12 +103,10 @@ def check_rows(board):
 
 def check_columns(board):
     """checks each column of the board for duplicates"""
-    for col_index in range(len(board)):
-        col_array = []
-        for row in board:
-            col_array.append(row[col_index])
+    for column_index in range(len(board[0])):
+        column = map(lambda row: row[column_index], board)
 
-        if check_for_duplicates(col_array):
+        if check_for_duplicates(list(column)):
             return False
 
     return True
@@ -135,10 +137,6 @@ def get_block(board, start_coordinate, block_width, block_height):
             block.append(board[i][j])
 
     return block
-
-
-def check_for_duplicates(list_check):
-    return len(list_check) != len(set(list_check))
 
 
 board_correct = [
