@@ -106,8 +106,8 @@ def check_blocks(board, square_dim=3):
     for i in range(blocks_horizontal):
         for j in range(blocks_vertical):
             start_coordinate = [i * block_width, j * block_height]
-            block_list = get_block(board, start_coordinate, block_width, block_height)
-            if check_for_duplicates(block_list):
+            block = get_block(board, start_coordinate, block_width, block_height)
+            if check_for_duplicates(block):
                 return False
 
     return True
