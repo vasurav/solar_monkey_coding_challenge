@@ -15,10 +15,13 @@ def diamond(n):
 
     for i in range(n-2, 0, -2):
         new_line = diamond_line(n, i)
-        diamond_string = new_line + '\n' + diamond_string
-        diamond_string = diamond_string + '\n' + new_line
+        diamond_string = add_line_around_string(diamond_string, new_line)
 
     return '\n' + diamond_string + '\n'
+
+
+def add_line_around_string(original_string, new_line):
+    return new_line + '\n' + original_string + '\n' + new_line
 
 
 def diamond_line(diamond_width, current_line):
