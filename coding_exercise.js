@@ -1,9 +1,9 @@
 //  SETUP! DO NOT TOUCH!
-//const Mocha = require('mocha')
-//const chai = require('chai')
-//const { expect } = chai
-//const mocha = new Mocha()
-//mocha.suite.emit('pre-require', this, 'solution', mocha)
+const Mocha = require('mocha')
+const chai = require('chai')
+const { expect } = chai
+const mocha = new Mocha()
+mocha.suite.emit('pre-require', this, 'solution', mocha)
 //  END OF SETUP
 
 
