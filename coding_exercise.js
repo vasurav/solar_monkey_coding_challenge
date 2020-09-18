@@ -61,7 +61,8 @@ function charString(numChars, charToAdd) {
   return charString
 }
 
-
+// Puzzle 1 Test
+console.log('Puzzle 1 Checks: ')
 console.log('diamond(0): ' + diamond(0));
 console.log('diamond(4): ' + diamond(4));
 console.log('diamond(3): ' + diamond(3));
@@ -115,37 +116,36 @@ function validateSudoku(board) {
     return false;
   }
 
-  if (!checkHorizontals(board)) {
+  if (!checkRows(board)) {
     return false;
   }
 
-  if (!checkVerticals(board)) {
+  if (!checkColumns(board)) {
     return false;
   }
 
-  if (!checkBoxes(board)) {
+  if (!checkBlocks(board)) {
     return false;
   }
 
   return true;
 }
+
+// check an array for duplicates
+const checkForDuplicates = arr =>  arr.length !== new Set(arr).size;
 
 function checkForNoZeros(board) {
-  for (let i = 0; i < board.length; i++) {
-    if (board[i].includes(0)) {
+  for (let row of board) {
+    if (row.includes(0)) {
       return false;
     }
   }
   return true;
 }
 
-function checkForDuplicates(arr) {
-  return arr.length !== new Set(arr).size;
-}
-
-function checkHorizontals(board) {
-  for (let i = 0; i < board.length; i++) {
-    if (checkForDuplicates(board[i])) {
+function checkRows(board) {
+  for (let row of board) {
+    if (checkForDuplicates(row)) {
       return false;
     }
   }
@@ -153,20 +153,10 @@ function checkHorizontals(board) {
   return true;
 }
 
-function getVerticalArray(board, i) {
-  let verticalArray = [];
-  for (let j = 0; j < board.length; j++) {
-    verticalArray.push(board[j][i]);
-  }
-
-  return verticalArray;
-}
-
-
-function checkVerticals(board) {
+function checkColumns(board) {
   for (let i = 0;  i < board[0].length; i++) {
-    let verticalArray = getVerticalArray(board, i);
-    if (checkForDuplicates(verticalArray)) {
+    const column = board.map(row => row[i]);
+    if (checkForDuplicates(column)) {
       return false;
     }
   }
@@ -174,30 +164,28 @@ function checkVerticals(board) {
   return true;
 }
 
-function getBox(board, boxCoordinateStart, boxWidth, boxHeight) {
-  let boxArray = [];
-  for (let i = boxCoordinateStart[0]; i < boxCoordinateStart[0] + boxWidth; i++) {
-    for (let j = boxCoordinateStart[1]; j < boxCoordinateStart[1] + boxWidth; j++) {
-      boxArray.push(board[i][j]);
+function getBlock(board, blockCoordinateStart, blockWidth, blockHeight) {
+  let blockArray = [];
+  for (let i = blockCoordinateStart[0]; i < blockCoordinateStart[0] + blockWidth; i++) {
+    for (let j = blockCoordinateStart[1]; j < blockCoordinateStart[1] + blockWidth; j++) {
+      blockArray.push(board[i][j]);
     }
   }
 
-  return boxArray;
+  return blockArray;
 }
 
-function checkBoxes(board) {
-  const boxDimSquare = 3; // in this case all dimensions are equal, but can change the function if you want
+function checkBlocks(board, blockDimSquare=3,
+                    blocksHorizontal=blockDimSquare,
+                    blocksVertical=blockDimSquare,
+                    blockWidth=blockDimSquare,
+                    blockHeight=blockDimSquare) {
 
-  const boxesHorizontal = boxDimSquare; // how many boxes there are in the horizontal direction
-  const boxesVertical = boxDimSquare;   // how many boxes there are in the vertical direction
-  const boxWidth = boxDimSquare;        // box dimension in the horizontal
-  const boxHeight = boxDimSquare;       // box dimension in the vertical
-
-  for (let i = 0; i < boxesHorizontal; i++) {
-    for (let j = 0; j < boxesVertical; j++) {
-      let boxCoordinateStart = [i*boxWidth, j*boxHeight];
-      let boxArray = getBox(board, boxCoordinateStart, boxWidth, boxHeight);
-      if (checkForDuplicates(boxArray)) {
+  for (let i = 0; i < blocksHorizontal; i++) {
+    for (let j = 0; j < blocksVertical; j++) {
+      const blockCoordinateStart = [i*blockWidth, j*blockHeight];
+      const blockArray = getBlock(board, blockCoordinateStart, blockWidth, blockHeight);
+      if (checkForDuplicates(blockArray)) {
         return false;
       }
     }
@@ -207,6 +195,7 @@ function checkBoxes(board) {
 }
 
 
+// Puzzle 2 Test
 const board_correct = [
             [5, 3, 4, 6, 7, 8, 9, 1, 2],
             [6, 7, 2, 1, 9, 5, 3, 4, 8],
@@ -255,7 +244,7 @@ const board_bad_rows = [
             [3, 4, 5, 2, 6, 8, 1, 7, 9],
         ]
 
-const board_bad_boxes = [
+const board_bad_blocks = [
             [1, 2, 3, 4, 5, 6, 7, 8, 9],
             [2, 3, 4, 5, 6, 7, 8, 9, 1],
             [3, 4, 5, 6, 7, 8, 9, 1, 2],
@@ -272,14 +261,14 @@ console.log('Puzzle 2 Checks:')
 console.log('Zero check Good Board: ' + String(checkForNoZeros(board_correct)))
 console.log('Zero check Zeros: ' + String(checkForNoZeros(board_zeros)))
 
-console.log('Row check Good Board: ' + String(checkHorizontals(board_correct)))
-console.log('Row check Bad Row: ' + String(checkHorizontals(board_bad_rows)))
+console.log('Row check Good Board: ' + String(checkRows(board_correct)))
+console.log('Row check Bad Row: ' + String(checkRows(board_bad_rows)))
 
-console.log('Column check Good Board: ' + String(checkVerticals(board_correct)))
-console.log('Column check Bad Column: ' + String(checkVerticals(board_bad_columns)))
+console.log('Column check Good Board: ' + String(checkColumns(board_correct)))
+console.log('Column check Bad Column: ' + String(checkColumns(board_bad_columns)))
 
-console.log('Block check Good Board: ' + String(checkBoxes(board_correct)))
-console.log('Block check Bad Block: ' + String(checkBoxes(board_bad_boxes)))
+console.log('Block check Good Board: ' + String(checkBlocks(board_correct)))
+console.log('Block check Bad Block: ' + String(checkBlocks(board_bad_blocks)))
 
 console.log('\n')
 
@@ -287,7 +276,7 @@ console.log('Validate Sudoku: Correct: ' + String(validateSudoku(board_correct))
 console.log('Validate Sudoku: Zeros: ' + String(validateSudoku(board_zeros)))
 console.log('Validate Sudoku: Bad Row: ' + String(validateSudoku(board_bad_rows)))
 console.log('Validate Sudoku: Bad Column: ' + String(validateSudoku(board_bad_columns)))
-console.log('Validate Sudoku: Bad Block: ' + String(validateSudoku(board_bad_boxes)))
+console.log('Validate Sudoku: Bad Block: ' + String(validateSudoku(board_bad_blocks)))
 
 //  TESTS PUZZLE 2
 //describe('Sudoku', () => {
