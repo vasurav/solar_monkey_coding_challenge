@@ -8,6 +8,7 @@
 
 
 def diamond(n):
+    # return empty string for invalid diamond sizes
     if n <= 0 or n % 2 == 0:
         return ''
 
@@ -15,7 +16,7 @@ def diamond(n):
     diamond_string = char_string(n, '*')
 
     # add smaller lines of stars to the diamond
-    for i in range(n-2, 0, -2):
+    for i in range(n - 2, 0, -2):
         new_line = diamond_line(n, i)
         diamond_string = add_line_around_string(diamond_string, new_line)
 
@@ -128,12 +129,12 @@ def check_blocks(board, square_dim=3):
 
 def get_block(board, start_coordinate, block_width, block_height):
     """returns a block based on the starting coordinate of that block in the board"""
-    block_list = []
+    block = []
     for i in range(start_coordinate[0], start_coordinate[0] + block_width):
         for j in range(start_coordinate[1], start_coordinate[1] + block_height):
-            block_list.append(board[i][j])
+            block.append(board[i][j])
 
-    return block_list
+    return block
 
 
 def check_for_duplicates(list_check):
