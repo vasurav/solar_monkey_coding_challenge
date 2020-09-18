@@ -11,12 +11,15 @@ def diamond(n):
     if n <= 0 or n % 2 == 0:
         return ''
 
-    diamond_string = diamond_line(n, n)
+    # start with base line
+    diamond_string = char_string(n, '*')
 
+    # add smaller lines of stars to the diamond
     for i in range(n-2, 0, -2):
         new_line = diamond_line(n, i)
         diamond_string = add_line_around_string(diamond_string, new_line)
 
+    # add leading and trailing line breaks
     return '\n' + diamond_string + '\n'
 
 
@@ -34,16 +37,19 @@ def diamond_line(diamond_width, current_line):
 
 
 def calc_spaces(diamond_width, current_line):
+    """calculates the number of leading and trailing spaces needed for a given line in a diamond"""
     return int((diamond_width - current_line)/2)
 
 
 def char_string(num_chars, char):
+    """returns a number (num_chars) of character (char) as a string"""
     return_string = ''
 
     for i in range(num_chars):
         return_string += char
 
     return return_string
+
 
 print('Puzzle 1 Checks: ')
 print(f'diamond(0): {diamond(0)}')
@@ -73,6 +79,7 @@ def validate_sudoku(board):
 
 
 def check_zeros(board):
+    """checks if the board has any zeros in it"""
     for row in board:
         if 0 in row:
             return False
@@ -81,6 +88,7 @@ def check_zeros(board):
 
 
 def check_rows(board):
+    """checks each row of the board for duplicates"""
     for row in board:
         if check_for_duplicates(row):
             return False
@@ -89,6 +97,7 @@ def check_rows(board):
 
 
 def check_columns(board):
+    """checks each column of the board for duplicates"""
     for col_index in range(len(board)):
         col_array = []
         for row in board:
@@ -101,6 +110,7 @@ def check_columns(board):
 
 
 def check_blocks(board, square_dim=3):
+    """checks each block of the board for duplicates"""
     blocks_horizontal = square_dim
     blocks_vertical = square_dim
     block_width = square_dim
@@ -117,6 +127,7 @@ def check_blocks(board, square_dim=3):
 
 
 def get_block(board, start_coordinate, block_width, block_height):
+    """returns a block based on the starting coordinate of that block in the board"""
     block_list = []
     for i in range(start_coordinate[0], start_coordinate[0] + block_width):
         for j in range(start_coordinate[1], start_coordinate[1] + block_height):
